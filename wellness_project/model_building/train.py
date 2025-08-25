@@ -28,23 +28,29 @@ ytrain = pd.read_csv(ytrain_path)
 ytest = pd.read_csv(ytest_path)
 
 
-# One-hot encode 'Type' and scale numeric features
 numeric_features = [
-    'Age',
-    'NumberOfPersonVisiting',
-    'PreferredPropertyStar',
-    'Passport',
-    'OwnCar',
-    'NumberOfChildrenVisiting',
-    'MonthlyIncome',
-    'PitchSatisfactionScore',
-    'ProductPitched'
-    'NumberOfFollowups',
-    'DurationOfPitch'
+    "Age",
+    "NumberOfPersonVisiting",
+    "PreferredPropertyStar",
+    "Passport",
+    "OwnCar",
+    "NumberOfChildrenVisiting",
+    "MonthlyIncome",
+    "NumberOfFollowups",
+    "DurationOfPitch",
+    "NumberOfTrips",
+    "PitchSatisfactionScore"
 ]
-categorical_features = ['TypeofContact','CityTier','Occupation','Occupation','MaritalStatus','NumberOfTrips','Designation']
 
-
+categorical_features = [
+    "TypeofContact",
+    "CityTier",
+    "Occupation",
+    "Gender",
+    "ProductPitched",
+    "MaritalStatus",
+    "Designation"
+]
 # Class weight to handle imbalance
 class_weight = ytrain.value_counts()[0] / ytrain.value_counts()[1]
 
