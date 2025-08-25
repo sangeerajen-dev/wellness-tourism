@@ -1,8 +1,8 @@
 # for data manipulation
 import pandas as pd
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
-from sklearn.compose import make_column_transformer
-from sklearn.pipeline import make_pipeline
+from sklearn.compose import make_column_transformer,ColumnTransformer
+from sklearn.pipeline import make_pipeline,Pipeline
 # for model training, tuning, and evaluation
 import xgboost as xgb
 from sklearn.model_selection import RandomizedSearchCV
@@ -51,14 +51,28 @@ categorical_features = [
     "MaritalStatus",
     "Designation"
 ]
+
+
+
+# Preprocessors
+numeric_transformer = Pipeline(steps=[
+    ("scaler", StandardScaler())
+])
+
+categorical_transformer = Pipeline(steps=[
+    ("encoder", OneHotEncoder(handle_unknown="ignore"))
+])
+
+preprocessor = ColumnTransformer(
+    transformers=[
+        ("num", numeric_transformer, numeric_features),
+        ("cat", categorical_transformer, categorical_features)
+    ]
+)
+
 # Class weight to handle imbalance
 class_weight = ytrain.value_counts()[0] / ytrain.value_counts()[1]
 
-# Preprocessing pipeline
-preprocessor = make_column_transformer(
-    (StandardScaler(), numeric_features),
-    (OneHotEncoder(handle_unknown='ignore'), categorical_features)
-)
 
 # Define XGBoost model
 xgb_model = xgb.XGBClassifier(scale_pos_weight=class_weight, random_state=42)
