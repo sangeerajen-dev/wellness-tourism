@@ -21,7 +21,8 @@ numeric_features = [
     'PitchSatisfactionScore',
     'ProductPitched',
     'NumberOfFollowups',
-    'DurationOfPitch'
+    'DurationOfPitch',
+    'NumberOfTrips'
 ]
 
 categorical_features = [
@@ -29,7 +30,7 @@ categorical_features = [
     'CityTier',
     'Occupation',
     'MaritalStatus',
-    'NumberOfTrips',
+    'Gender',
     'Designation'
 ]
 
@@ -43,7 +44,7 @@ with st.form("input_form"):
 
     st.subheader("Numeric Features")
     for feature in numeric_features:
-        user_input[feature] = st.number_input(f"{feature}", min_value=0.0, step=1.0)
+        user_input[feature] = st.number_input(f"{feature}", min_value=0, step=1)
 
     st.subheader("Categorical Features")
     for feature in categorical_features:
