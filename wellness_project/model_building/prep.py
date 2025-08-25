@@ -19,33 +19,35 @@ print("Dataset loaded successfully.")
 # Drop the unique identifier
 df.drop(columns=['UDI'], errors='ignore',inplace=True)
 
-# Encoding the categorical 'Type' column
-label_encoder = LabelEncoder()
-df['Type'] = label_encoder.fit_transform(df['Type'])
+# Drop unique identifier if it exists
+if "CustomerID" in df.columns:
+    df.drop(columns=["CustomerID"], inplace=True)
 
-target_col = 'ProdTaken'
+# Define target column
+target_col = "ProdTaken"
 
-# Split into X (features) and y (target)
+# Split into features and target
 X = df.drop(columns=[target_col])
 y = df[target_col]
 
 # Perform train-test split
 Xtrain, Xtest, ytrain, ytest = train_test_split(
-    X, y, test_size=0.2, random_state=42
+    X, y, test_size=0.2, random_state=42, stratify=y
 )
 
-Xtrain.to_csv("Xtrain.csv",index=False)
-Xtest.to_csv("Xtest.csv",index=False)
-ytrain.to_csv("ytrain.csv",index=False)
-ytest.to_csv("ytest.csv",index=False)
+# Save splits
+Xtrain.to_csv("Xtrain.csv", index=False)
+Xtest.to_csv("Xtest.csv", index=False)
+ytrain.to_csv("ytrain.csv", index=False)
+ytest.to_csv("ytest.csv", index=False)
 
-
-files = ["Xtrain.csv","Xtest.csv","ytrain.csv","ytest.csv"]
+# Upload splits to Hugging Face dataset repo
+files = ["Xtrain.csv", "Xtest.csv", "ytrain.csv", "ytest.csv"]
 
 for file_path in files:
     api.upload_file(
         path_or_fileobj=file_path,
-        path_in_repo=file_path.split("/")[-1],  # just the filename
+        path_in_repo=file_path,
         repo_id="sangee-huggingface/wellness-tourism-package",
         repo_type="dataset",
     )
