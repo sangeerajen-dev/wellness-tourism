@@ -25,17 +25,17 @@ numeric_features = [
     "NumberOfTrips"
 ]
 
-categorical_features = [
-    "TypeofContact",
-    "CityTier",
-    "Occupation",
-    "MaritalStatus",
-    "Gender",
-    "ProductPitched",
-    "Designation"
-]
+categorical_features = {
+    "TypeofContact": ["Self Enquiry", "Company Invited"],
+    "CityTier": [1, 2, 3],
+    "Occupation": ["Salaried", "Small Business", "Large Business", "Free Lancer"],
+    "MaritalStatus": ["Single", "Married", "Divorced"],
+    "Gender": ["Male", "Female"],
+    "ProductPitched": ["Basic", "Standard", "Deluxe", "Super Deluxe", "King"],
+    "Designation": ["Manager", "Executive", "Senior Manager", "AVP", "VP"]
+}
 
-st.title("Travel Lead Conversion Prediction")
+st.title("🌍 Travel Lead Conversion Prediction")
 
 st.write("### Please enter the customer details:")
 
@@ -44,11 +44,13 @@ with st.form("input_form"):
 
     st.subheader("Numeric Features")
     for feature in numeric_features:
-        user_input[feature] = st.number_input(f"{feature}", min_value=0, step=1)
+        user_input[feature] = st.number_input(
+            f"{feature}", min_value=0, step=1, value=1
+        )
 
     st.subheader("Categorical Features")
-    for feature in categorical_features:
-        user_input[feature] = st.text_input(f"{feature}")
+    for feature, options in categorical_features.items():
+        user_input[feature] = st.selectbox(f"{feature}", options)
 
     # Submit button inside the form
     submitted = st.form_submit_button("Predict")
@@ -60,7 +62,7 @@ if submitted:
 
         # Run prediction
         prediction = model.predict(input_df)[0]
-        result = "Converted" if prediction == 1 else "Not Converted"
+        result = "✅ Converted" if prediction == 1 else "❌ Not Converted"
 
         st.subheader("Prediction Result:")
         st.success(f"The model predicts: **{result}**")
