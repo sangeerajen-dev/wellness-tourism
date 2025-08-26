@@ -28,6 +28,7 @@ ytrain = pd.read_csv(ytrain_path)
 ytest = pd.read_csv(ytest_path)
 
 
+# Define features exactly as in training
 numeric_features = [
     "Age",
     "NumberOfPersonVisiting",
@@ -36,22 +37,21 @@ numeric_features = [
     "OwnCar",
     "NumberOfChildrenVisiting",
     "MonthlyIncome",
+    "PitchSatisfactionScore",
     "NumberOfFollowups",
     "DurationOfPitch",
-    "NumberOfTrips",
-    "PitchSatisfactionScore"
+    "NumberOfTrips"
 ]
 
 categorical_features = [
     "TypeofContact",
     "CityTier",
     "Occupation",
+    "MaritalStatus",
     "Gender",
     "ProductPitched",
-    "MaritalStatus",
     "Designation"
 ]
-
 
 
 # Preprocessors
